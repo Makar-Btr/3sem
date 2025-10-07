@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class Main 
 {
@@ -13,9 +14,14 @@ public class Main
     {
         ArrayList<GradeBook> books = new ArrayList<>();
 
-        readFromFile("d:\\java\\Lab4\\Lab4\\input.txt", books);
+        readFromFile("d:\\3sem\\java\\Lab4\\Lab4\\input.txt", books);
 
-        try(PrintWriter writer = new PrintWriter(new FileWriter("d:\\java\\Lab4\\Lab4\\output.txt"));)
+        books.sort(Comparator
+            .comparingInt(GradeBook::getGroup)
+            .thenComparing(book -> book.getSurname() + book.getName() + book.getPatronymic())
+        );
+
+        try(PrintWriter writer = new PrintWriter(new FileWriter("d:\\3sem\\java\\Lab4\\Lab4\\output.txt"));)
         {
             for(GradeBook book : books)
             {
