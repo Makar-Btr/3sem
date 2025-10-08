@@ -120,7 +120,7 @@ void parentProcess() {
     
     WaitForSingleObject(pi.hProcess, INFINITE);
 
-    std::cout << "\nРодитель: Максимальный эллемент массива " << minElement << std::endl;
+    std::cout << "\nРодитель: Максимальный элемент массива " << minElement << std::endl;
 
     CloseHandle(hReadPipe2);
     CloseHandle(pi.hProcess);
