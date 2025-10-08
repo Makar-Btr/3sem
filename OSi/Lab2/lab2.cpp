@@ -4,46 +4,30 @@
 #include <string>
 #include <algorithm>
 
-void printWin32Error(const std::string& functionName) {
-    DWORD errorCode = GetLastError();
-    LPSTR errorMessage = nullptr;
-    FormatMessageA(
-        FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-        nullptr,
-        errorCode,
-        MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-        (LPSTR)&errorMessage,
-        0,
-        nullptr
-    );
-    std::cerr << "Ошибка в функции " << functionName << ": " << errorMessage << std::endl;
-    LocalFree(errorMessage);
-}
-
 void childProcess() {
     
     DWORD bytesRead;
     int arraySize = 0;
     if (!ReadFile(GetStdHandle(STD_INPUT_HANDLE), &arraySize, sizeof(int), &bytesRead, nullptr) || bytesRead == 0) {
-        std::cerr << "Потомок: Не удалось прочитать размер массива." << std::endl;
+        std::cerr << "Потомок: Ошибка в функции ReadFile (arraySize)." << std::endl;
         return;
     }
     
     std::vector<int> numbers(arraySize);
     if (!ReadFile(GetStdHandle(STD_INPUT_HANDLE), numbers.data(), arraySize * sizeof(int), &bytesRead, nullptr) || bytesRead == 0) {
-        std::cerr << "Потомок: Не удалось прочитать элементы массива." << std::endl;
+        std::cerr << "Потомок: Ошибка в функции ReadFile (nummbers)." << std::endl;
         return;
     }
 
     if (numbers.empty()) {
-        std::cerr << "Потомок: Массив пуст, нет минимального элемента." << std::endl;
+        std::cerr << "Потомок: Массив пуст" << std::endl;
         return;
     }
-    int minElement = *std::min_element(numbers.begin(), numbers.end());
+    int maxElement = *std::max_element(numbers.begin(), numbers.end());
 
     DWORD bytesWritten;
-    if (!WriteFile(GetStdHandle(STD_OUTPUT_HANDLE), &minElement, sizeof(int), &bytesWritten, nullptr)) {
-        std::cerr << "Потомок: Не удалось записать результат." << std::endl;
+    if (!WriteFile(GetStdHandle(STD_OUTPUT_HANDLE), &maxElement, sizeof(int), &bytesWritten, nullptr)) {
+        std::cerr << "Потомок: Ошибка в функции WriteFile (maxElement)." << std::endl;
         return;
     }
 
@@ -70,13 +54,14 @@ void parentProcess() {
     sa.bInheritHandle = TRUE;
     sa.lpSecurityDescriptor = nullptr;
 
-    if (!CreatePipe(&hReadPipe1, &hWritePipe1, &sa, 0)) {
-        printWin32Error("CreatePipe (Pipe1)");
+    if (!CreatePipe(&hReadPipe1, &hWritePipe1, &sa, 0)) 
+    {    
+        std::cerr << "Родитель: Ошибка в функции CreatePipe (Pipe1)" << std::endl;
         return;
     }
 
     if (!CreatePipe(&hReadPipe2, &hWritePipe2, &sa, 0)) {
-        printWin32Error("CreatePipe (Pipe2)");
+        std::cerr << "Родитель: Ошибка в функции CreatePipe (Pipe2)" << std::endl;
         CloseHandle(hReadPipe1);
         CloseHandle(hWritePipe1);
         return;
@@ -107,7 +92,7 @@ void parentProcess() {
         &si,
         &pi
     )) {
-        printWin32Error("CreateProcessA");
+        std::cerr << "Родитель: Ошибка в функции CreateProcessA" << std::endl;
         CloseHandle(hReadPipe1);
         CloseHandle(hWritePipe1);
         CloseHandle(hReadPipe2);
@@ -120,22 +105,22 @@ void parentProcess() {
 
     DWORD bytesWritten;
     if (!WriteFile(hWritePipe1, &arraySize, sizeof(int), &bytesWritten, nullptr)) {
-        printWin32Error("WriteFile (arraySize)");
+        std::cerr << "Родитель: Ошибка в функции WriteFile (arraySize)" << std::endl;
     }
     if (!WriteFile(hWritePipe1, numbers.data(), arraySize * sizeof(int), &bytesWritten, nullptr)) {
-        printWin32Error("WriteFile (numbers)");
+        std::cerr << "Родитель: Ошибка в функции WriteFile (numbers)" << std::endl;
     }
     CloseHandle(hWritePipe1);
 
     int minElement;
     DWORD bytesRead;
     if (!ReadFile(hReadPipe2, &minElement, sizeof(int), &bytesRead, nullptr)) {
-        printWin32Error("ReadFile (result)");
+        std::cerr << "Родитель: Ошибка в функции ReadFile (result)" << std::endl;
     }
     
     WaitForSingleObject(pi.hProcess, INFINITE);
 
-    std::cout << "\nРодительский процесс получил результат от потомка: " << minElement << std::endl;
+    std::cout << "\nРодитель: Максимальный эллемент массива " << minElement << std::endl;
 
     CloseHandle(hReadPipe2);
     CloseHandle(pi.hProcess);
