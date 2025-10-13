@@ -28,76 +28,35 @@ int main()
         return 0;
     }
 
-    vector<Ward> wards(p);
-    for(int i = 0; i < p; i++)
-    {
-        wards[i].number = i + 1;
-        in >> wards[i].n >> wards[i].a >> wards[i].b;
-    }
-
+    int w_number, w_n, w_a, w_b;
     vector<int> wardsA;
     vector<Ward> emptyWards;
-
     for(int i = 0; i < p; i++)
     {
-        if(wards[i].a > 0 && wards[i].b == 0)
+        w_number = i + 1;
+        in >> w_n >> w_a >> w_b;
+
+        if(w_a > 0 && w_b == 0)
         {
-            inWard += min(a, wards[i].n - wards[i].a);
-            a -= min(a, wards[i].n - wards[i].a);
+            inWard += min(a, w_n - w_a);
+            a -= min(a, w_n - w_a);
             wardsA.push_back(i + 1);
         }
-        else if(wards[i].a == 0 && wards[i].b > 0)
+        else if(w_a == 0 && w_b > 0)
         {
-            inWard += min(b, wards[i].n - wards[i].b);
-            b -= min(b, wards[i].n - wards[i].b);
+            inWard += min(b, w_n - w_b);
+            b -= min(b, w_n - w_b);
         }
-        else if(wards[i].a == 0 && wards[i].b == 0)
+        else if(w_n > 0 && w_a == 0 && w_b == 0)
         {
-            emptyWards.push_back(wards[i]);
-        }
-    }
-
-    sort(emptyWards.begin(), emptyWards.end(), [](Ward a, Ward b){ return a.n > b.n; });
-
-    for(int i = 0; i < emptyWards.size(); i++)
-    {
-        if(a == 0 && b == 0)
-        {
-            break;
-        }
-
-        if(a >= b && a > 0)
-        {
-            inWard += min(a, emptyWards[i].n);
-            a -= min(a, emptyWards[i].n);
-            wardsA.push_back(emptyWards[i].number);
-        }
-        else if(b > a && b > 0)
-        {
-            inWard += min(b, emptyWards[i].n);
-            b -= min(b, emptyWards[i].n);
-        }
-        else if(a > 0)  // a == b или b == 0
-        {
-            int canPlace = min(a, emptyWards[i].n);
-            inWard += canPlace;
-            a -= canPlace;
-            wardsA.push_back(emptyWards[i].number);
-        }
-        else if(b > 0)  // a == 0
-        {
-            int canPlace = min(b, emptyWards[i].n);
-            inWard += canPlace;
-            b -= canPlace;
+            emptyWards.push_back({w_number, w_n, w_a, w_b});
         }
     }
-    
-    sort(wardsA.begin(), wardsA.end());
 
-    if(inWard == total)
+    if(emptyWards.empty())
     {
         out << inWard << endl;
-        if(!wardsA.empty())
+        if(inWard == total && !wardsA.empty())
         {
             for(int i = 0; i < wardsA.size() - 1; i++)
             {
@@ -105,11 +64,74 @@ int main()
             }
             out << wardsA[wardsA.size() - 1] << endl;
         }
+        return 0;
     }
-    else
+
+    int maxCap = 0;
+    for (const Ward& ward : emptyWards)
     {
-        out << inWard << endl;
+        maxCap += ward.n;
     }
+
+    vector<vector<bool>> possibleSums(emptyWards.size() + 1, vector<bool>(maxCap + 1, false));
+    possibleSums[0][0] = true;
+    int cap;
+    for(int i = 1; i <= emptyWards.size(); i++)
+    {
+        cap = emptyWards[i - 1].n;
+        for(int j = 0; j <= maxCap; j++)
+        {
+            possibleSums[i][j] = possibleSums[i - 1][j];
+            if(j >= cap && possibleSums[i - 1][j - cap])
+            {
+                possibleSums[i][j] = true;
+            }
+        }
+    }
+
+    int placedInEmpty = -1, bestA = -1;
+    int plasedA, plasedB;
+    for(int s = 0; s <= maxCap; s++)
+    {
+        if(possibleSums[emptyWards.size()][s])
+        {
+            plasedA = min(a, s);
+            plasedB = min(b, maxCap - s);
+        }
+        if(placedInEmpty < plasedA + plasedB)
+        {
+            placedInEmpty = plasedA + plasedB;
+            bestA = s;
+        }
+    }
+
+    out << inWard + placedInEmpty << endl;
+
+    if(inWard + placedInEmpty == total)
+    {
+        int sum = bestA;
+        for(int s = emptyWards.size(); s > 0; s--)
+        {
+            cap = emptyWards[s - 1].n;
+            if(sum >= cap && possibleSums[s - 1][sum - cap])
+            {
+                wardsA.push_back(emptyWards[s - 1].number);
+                sum -= cap;
+            }
+        }
+
+        sort(wardsA.begin(), wardsA.end());
+
+        if(!wardsA.empty())
+        {
+            for(int s = 0; s < wardsA.size() - 1; s++)
+            {
+                out << wardsA[s] << " ";
+            }
+            out << wardsA[wardsA.size() - 1] << endl;
+        }
+    }
+
 
     return 0;
 }

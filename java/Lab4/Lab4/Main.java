@@ -18,8 +18,7 @@ public class Main
 
         books.sort(Comparator
             .comparingInt(GradeBook::getGroup)
-            .thenComparing(book -> book.getSurname() + book.getName() + book.getPatronymic())
-        );
+            .thenComparing(book -> book.getSurname() + book.getName() + book.getPatronymic()));
 
         try(PrintWriter writer = new PrintWriter(new FileWriter("d:\\3sem\\java\\Lab4\\Lab4\\output.txt"));)
         {
@@ -37,20 +36,23 @@ public class Main
 
     public static void readFromFile(String filename, ArrayList<GradeBook> gradeBooks) 
     {
-        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) 
+        {
             String line;
             GradeBook currentBook = null;
             GradeBook.Session currentSession = null;
             
-            while ((line = reader.readLine()) != null) {
+            while((line = reader.readLine()) != null) 
+            {
                 line = line.trim();
-                if (line.isEmpty()) continue;
+                if(line.isEmpty()) continue;
                 
-                if (line.startsWith("Студент:")) {
-                    // Формат: Student: Иванов Иван Иванович, 2, 101
+                if(line.startsWith("Студент:")) 
+                {
                     String studentData = line.substring(8).trim();
                     String[] parts = studentData.split(",");
-                    if (parts.length >= 3) {
+                    if(parts.length >= 3) 
+                    {
                         String[] nameParts = parts[0].trim().split(" ");
                         String surname = nameParts[0];
                         String name = nameParts[1];
@@ -61,17 +63,21 @@ public class Main
                         currentBook = new GradeBook(surname, name, patronymic, course, group);
                         gradeBooks.add(currentBook);
                     }
-                } else if (line.startsWith("Сессия:")) {
-                    // Формат: Session: 1
+                } 
+                else if(line.startsWith("Сессия:")) 
+                {
                     int sessionNumber = Integer.parseInt(line.substring(7).trim());
-                    if (currentBook != null) {
+                    if (currentBook != null) 
+                    {
                         currentSession = currentBook.createSession(sessionNumber);
                     }
-                } else if (line.startsWith("Экзамен:")) {
-                    // Формат: Exam: Математика, 9
+                } 
+                else if(line.startsWith("Экзамен:")) 
+                {
                     String examData = line.substring(8).trim();
                     String[] parts = examData.split(",");
-                    if (parts.length >= 2 && currentSession != null) {
+                    if(parts.length >= 2 && currentSession != null) 
+                    {
                         String subject = parts[0].trim();
                         int grade = Integer.parseInt(parts[1].trim());
                         currentSession.addExam(subject, grade);
