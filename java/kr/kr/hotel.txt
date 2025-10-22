@@ -1,0 +1,15 @@
+Moscow
+Hilton
+4
+Moscow
+Marriott
+3
+Petersburg
+Radisson
+4
+Petersburg
+Hilton
+3
+Moscow
+Sheraton
+4
