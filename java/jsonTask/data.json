@@ -1,0 +1,518 @@
+[
+  {
+    "m_surname": "Иванов",
+    "m_name": "Иван",
+    "m_patronymic": "Иванович",
+    "m_course": 2,
+    "m_group": 5,
+    "m_sessions": [
+      {
+        "m_number": 1,
+        "m_exams": [
+          {
+            "m_subject": "Математика",
+            "m_grade": 9
+          },
+          {
+            "m_subject": "Физика",
+            "m_grade": 10
+          },
+          {
+            "m_subject": "Программирование",
+            "m_grade": 9
+          }
+        ]
+      },
+      {
+        "m_number": 2,
+        "m_exams": [
+          {
+            "m_subject": "Алгоритмы",
+            "m_grade": 9
+          },
+          {
+            "m_subject": "Базы данных",
+            "m_grade": 10
+          },
+          {
+            "m_subject": "Веб-разработка",
+            "m_grade": 9
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "m_surname": "Иванова",
+    "m_name": "Ольга",
+    "m_patronymic": "Дмитриевна",
+    "m_course": 2,
+    "m_group": 5,
+    "m_sessions": [
+      {
+        "m_number": 1,
+        "m_exams": [
+          {
+            "m_subject": "Математика",
+            "m_grade": 4
+          },
+          {
+            "m_subject": "Физика",
+            "m_grade": 5
+          },
+          {
+            "m_subject": "Программирование",
+            "m_grade": 6
+          }
+        ]
+      },
+      {
+        "m_number": 2,
+        "m_exams": [
+          {
+            "m_subject": "Алгоритмы",
+            "m_grade": 5
+          },
+          {
+            "m_subject": "Базы данных",
+            "m_grade": 4
+          },
+          {
+            "m_subject": "Веб-разработка",
+            "m_grade": 6
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "m_surname": "Козлов",
+    "m_name": "Максим",
+    "m_patronymic": "Андреевич",
+    "m_course": 2,
+    "m_group": 5,
+    "m_sessions": [
+      {
+        "m_number": 1,
+        "m_exams": [
+          {
+            "m_subject": "Математика",
+            "m_grade": 3
+          },
+          {
+            "m_subject": "Физика",
+            "m_grade": 4
+          },
+          {
+            "m_subject": "Программирование",
+            "m_grade": 5
+          }
+        ]
+      },
+      {
+        "m_number": 2,
+        "m_exams": [
+          {
+            "m_subject": "Алгоритмы",
+            "m_grade": 4
+          },
+          {
+            "m_subject": "Базы данных",
+            "m_grade": 3
+          },
+          {
+            "m_subject": "Веб-разработка",
+            "m_grade": 5
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "m_surname": "Петрова",
+    "m_name": "Мария",
+    "m_patronymic": "Игоревна",
+    "m_course": 2,
+    "m_group": 5,
+    "m_sessions": [
+      {
+        "m_number": 1,
+        "m_exams": [
+          {
+            "m_subject": "Математика",
+            "m_grade": 10
+          },
+          {
+            "m_subject": "Физика",
+            "m_grade": 9
+          },
+          {
+            "m_subject": "Программирование",
+            "m_grade": 10
+          }
+        ]
+      },
+      {
+        "m_number": 2,
+        "m_exams": [
+          {
+            "m_subject": "Алгоритмы",
+            "m_grade": 9
+          },
+          {
+            "m_subject": "Базы данных",
+            "m_grade": 10
+          },
+          {
+            "m_subject": "Веб-разработка",
+            "m_grade": 9
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "m_surname": "Сидорова",
+    "m_name": "Анна",
+    "m_patronymic": "Михайловна",
+    "m_course": 2,
+    "m_group": 5,
+    "m_sessions": [
+      {
+        "m_number": 1,
+        "m_exams": [
+          {
+            "m_subject": "Математика",
+            "m_grade": 9
+          },
+          {
+            "m_subject": "Физика",
+            "m_grade": 9
+          },
+          {
+            "m_subject": "Программирование",
+            "m_grade": 8
+          }
+        ]
+      },
+      {
+        "m_number": 2,
+        "m_exams": [
+          {
+            "m_subject": "Алгоритмы",
+            "m_grade": 10
+          },
+          {
+            "m_subject": "Базы данных",
+            "m_grade": 9
+          },
+          {
+            "m_subject": "Веб-разработка",
+            "m_grade": 9
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "m_surname": "Иванов",
+    "m_name": "Алексей",
+    "m_patronymic": "Владимирович",
+    "m_course": 2,
+    "m_group": 6,
+    "m_sessions": [
+      {
+        "m_number": 1,
+        "m_exams": [
+          {
+            "m_subject": "Математика",
+            "m_grade": 8
+          },
+          {
+            "m_subject": "Физика",
+            "m_grade": 7
+          },
+          {
+            "m_subject": "Программирование",
+            "m_grade": 9
+          }
+        ]
+      },
+      {
+        "m_number": 2,
+        "m_exams": [
+          {
+            "m_subject": "Алгоритмы",
+            "m_grade": 8
+          },
+          {
+            "m_subject": "Базы данных",
+            "m_grade": 7
+          },
+          {
+            "m_subject": "Веб-разработка",
+            "m_grade": 9
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "m_surname": "Козлова",
+    "m_name": "Екатерина",
+    "m_patronymic": "Викторовна",
+    "m_course": 2,
+    "m_group": 6,
+    "m_sessions": [
+      {
+        "m_number": 1,
+        "m_exams": [
+          {
+            "m_subject": "Математика",
+            "m_grade": 9
+          },
+          {
+            "m_subject": "Физика",
+            "m_grade": 8
+          },
+          {
+            "m_subject": "Программирование",
+            "m_grade": 9
+          }
+        ]
+      },
+      {
+        "m_number": 2,
+        "m_exams": [
+          {
+            "m_subject": "Алгоритмы",
+            "m_grade": 8
+          },
+          {
+            "m_subject": "Базы данных",
+            "m_grade": 9
+          },
+          {
+            "m_subject": "Веб-разработка",
+            "m_grade": 8
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "m_surname": "Петров",
+    "m_name": "Петр",
+    "m_patronymic": "Петрович",
+    "m_course": 2,
+    "m_group": 6,
+    "m_sessions": [
+      {
+        "m_number": 1,
+        "m_exams": [
+          {
+            "m_subject": "Математика",
+            "m_grade": 3
+          },
+          {
+            "m_subject": "Физика",
+            "m_grade": 7
+          },
+          {
+            "m_subject": "Программирование",
+            "m_grade": 6
+          }
+        ]
+      },
+      {
+        "m_number": 2,
+        "m_exams": [
+          {
+            "m_subject": "Алгоритмы",
+            "m_grade": 8
+          },
+          {
+            "m_subject": "Базы данных",
+            "m_grade": 2
+          },
+          {
+            "m_subject": "Веб-разработка",
+            "m_grade": 6
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "m_surname": "Сидорова",
+    "m_name": "Татьяна",
+    "m_patronymic": "Александровна",
+    "m_course": 2,
+    "m_group": 6,
+    "m_sessions": [
+      {
+        "m_number": 1,
+        "m_exams": [
+          {
+            "m_subject": "Математика",
+            "m_grade": 9
+          },
+          {
+            "m_subject": "Физика",
+            "m_grade": 10
+          },
+          {
+            "m_subject": "Программирование",
+            "m_grade": 9
+          }
+        ]
+      },
+      {
+        "m_number": 2,
+        "m_exams": [
+          {
+            "m_subject": "Алгоритмы",
+            "m_grade": 10
+          },
+          {
+            "m_subject": "Базы данных",
+            "m_grade": 9
+          },
+          {
+            "m_subject": "Веб-разработка",
+            "m_grade": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "m_surname": "Козлов",
+    "m_name": "Дмитрий",
+    "m_patronymic": "Сергеевич",
+    "m_course": 2,
+    "m_group": 7,
+    "m_sessions": [
+      {
+        "m_number": 1,
+        "m_exams": [
+          {
+            "m_subject": "Математика",
+            "m_grade": 7
+          },
+          {
+            "m_subject": "Физика",
+            "m_grade": 6
+          },
+          {
+            "m_subject": "Программирование",
+            "m_grade": 8
+          }
+        ]
+      },
+      {
+        "m_number": 2,
+        "m_exams": [
+          {
+            "m_subject": "Алгоритмы",
+            "m_grade": 7
+          },
+          {
+            "m_subject": "Базы данных",
+            "m_grade": 8
+          },
+          {
+            "m_subject": "Веб-разработка",
+            "m_grade": 7
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "m_surname": "Петров",
+    "m_name": "Артем",
+    "m_patronymic": "Сергеевич",
+    "m_course": 2,
+    "m_group": 7,
+    "m_sessions": [
+      {
+        "m_number": 1,
+        "m_exams": [
+          {
+            "m_subject": "Математика",
+            "m_grade": 7
+          },
+          {
+            "m_subject": "Физика",
+            "m_grade": 8
+          },
+          {
+            "m_subject": "Программирование",
+            "m_grade": 7
+          }
+        ]
+      },
+      {
+        "m_number": 2,
+        "m_exams": [
+          {
+            "m_subject": "Алгоритмы",
+            "m_grade": 8
+          },
+          {
+            "m_subject": "Базы данных",
+            "m_grade": 7
+          },
+          {
+            "m_subject": "Веб-разработка",
+            "m_grade": 8
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "m_surname": "Сидоров",
+    "m_name": "Павел",
+    "m_patronymic": "Олегович",
+    "m_course": 2,
+    "m_group": 7,
+    "m_sessions": [
+      {
+        "m_number": 1,
+        "m_exams": [
+          {
+            "m_subject": "Математика",
+            "m_grade": 6
+          },
+          {
+            "m_subject": "Физика",
+            "m_grade": 5
+          },
+          {
+            "m_subject": "Программирование",
+            "m_grade": 7
+          }
+        ]
+      },
+      {
+        "m_number": 2,
+        "m_exams": [
+          {
+            "m_subject": "Алгоритмы",
+            "m_grade": 6
+          },
+          {
+            "m_subject": "Базы данных",
+            "m_grade": 7
+          },
+          {
+            "m_subject": "Веб-разработка",
+            "m_grade": 6
+          }
+        ]
+      }
+    ]
+  }
+]

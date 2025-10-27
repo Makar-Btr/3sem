@@ -3,14 +3,14 @@ package org.example;
 import java.text.NumberFormat;
 import java.util.*;
 
-class GradeBook 
+public class GradeBook
 {
-    private String m_surname;
-    private String m_name;
-    private String m_patronymic;
-    private int m_course;
-    private int m_group;
-    private List<Session> m_sessions;
+    private final String m_surname;
+    private final String m_name;
+    private final String m_patronymic;
+    private final int m_course;
+    private final int m_group;
+    private final List<Session> m_sessions;
 
     public GradeBook() 
     {
@@ -39,10 +39,10 @@ class GradeBook
         m_sessions = new ArrayList<>(obj.m_sessions);
     }
 
-    public class Session 
+    public static class Session
     {
-        private int m_number;
-        private List<Exam> m_exams;
+        private final int m_number;
+        private final List<Exam> m_exams;
 
         public Session() 
         {
@@ -101,10 +101,10 @@ class GradeBook
         }
     }
 
-    public class Exam 
+    public static class Exam
     {
-        private String m_subject;
-        private int m_grade;
+        private final String m_subject;
+        private final int m_grade;
 
         public Exam() 
         {
@@ -118,9 +118,9 @@ class GradeBook
             m_grade = grade;
         }
 
-        public Exam(Exam obj) 
+        public Exam(Exam obj)
         {
-            m_subject = obj.m_subject; 
+            m_subject = obj.m_subject;
             m_grade = obj.m_grade;
         }
 
@@ -135,21 +135,11 @@ class GradeBook
         }
     }
 
-    public void addSession(Session session) 
-    {
-        m_sessions.add(new Session(session));
-    }
-
     public Session createSession(int sessionNumber) 
     {
         Session session = new Session(sessionNumber);
         m_sessions.add(session);
         return session;
-    }
-
-    public List<Session> getSessions() 
-    {
-        return m_sessions;
     }
 
     public String getSurname() 
@@ -165,11 +155,6 @@ class GradeBook
     public String getPatronymic() 
     {
         return m_patronymic;
-    }
-
-    public int getCourse() 
-    {
-        return m_course;
     }
 
     public int getGroup() 
@@ -208,28 +193,38 @@ class GradeBook
     {
         NumberFormat formatter = NumberFormat.getNumberInstance();
         formatter.setMaximumFractionDigits(1);
-        String result = getStudentInfo() + "\n";
-        for(Session session : m_sessions) 
+
+        StringBuilder result = new StringBuilder();
+        result.append(getStudentInfo()).append("\n");
+
+        for(Session session : m_sessions)
         {
-            result += "  Сессия " + session.getSessionNumber() + ":\n";
-            for(Exam exam : session.getExams()) 
+            result.append("  Сессия ").append(session.getSessionNumber()).append(":\n");
+
+            for(Exam exam : session.getExams())
             {
-                result += "    " + exam.getSubject() + " - " + exam.getGrade() + "\n";
+                result.append("    ")
+                        .append(exam.getSubject())
+                        .append(" - ")
+                        .append(exam.getGrade())
+                        .append("\n");
             }
         }
+
         if(this.isExcellentStudent())
         {
-            result += "Отличник, средний балл: " + formatter.format(this.getAverageGrade()) + "\n";
+            result.append("Отличник, средний балл: ").append(formatter.format(this.getAverageGrade())).append("\n");
         }
-        else if (this.isBadStudent()) 
+        else if (this.isBadStudent())
         {
-            result += "Есть задолженности, средний балл: " + formatter.format(this.getAverageGrade()) + "\n";
+            result.append("Есть задолженности, средний балл: ").append(formatter.format(this.getAverageGrade())).append("\n");
         }
         else
         {
-            result += "Успевающий, средний балл: " + formatter.format(this.getAverageGrade()) + "\n";
+            result.append("Успевающий, средний балл: ").append(formatter.format(this.getAverageGrade())).append("\n");
         }
-        return result;
+
+        return result.toString();
     }
 
     public boolean isExcellentStudent() 
