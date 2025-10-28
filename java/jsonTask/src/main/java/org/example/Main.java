@@ -13,7 +13,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 
-public class Main 
+public class Main
 {
     public static void main(String[] args)
     {
@@ -29,24 +29,24 @@ public class Main
                 .thenComparing(book -> book.getSurname() + book.getName() + book.getPatronymic()));
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        
-        try (FileWriter writer = new FileWriter(jsonFile)) 
+
+        try (FileWriter writer = new FileWriter(jsonFile))
         {
             gson.toJson(books, writer);
-        } 
-        catch (IOException e) 
+        }
+        catch (IOException e)
         {
             System.out.println("Ошибка записи в JSON файл");
         }
 
         ArrayList<GradeBook> booksFromJson = new ArrayList<>();
-        
-        try (FileReader reader = new FileReader(jsonFile)) 
+
+        try (FileReader reader = new FileReader(jsonFile))
         {
             Type listType = new TypeToken<ArrayList<GradeBook>>(){}.getType();
             booksFromJson = gson.fromJson(reader, listType);
-        } 
-        catch (IOException e) 
+        }
+        catch (IOException e)
         {
             System.out.println("Ошибка чтения из JSON файла");
         }
@@ -64,24 +64,24 @@ public class Main
         }
     }
 
-    public static void readFromFile(String filename, ArrayList<GradeBook> gradeBooks) 
+    public static void readFromFile(String filename, ArrayList<GradeBook> gradeBooks)
     {
-        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) 
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename)))
         {
             String line;
             GradeBook currentBook = null;
             GradeBook.Session currentSession = null;
-            
-            while((line = reader.readLine()) != null) 
+
+            while((line = reader.readLine()) != null)
             {
                 line = line.trim();
                 if(line.isEmpty()) continue;
-                
-                if(line.startsWith("Студент:")) 
+
+                if(line.startsWith("Студент:"))
                 {
                     String studentData = line.substring(8).trim();
                     String[] parts = studentData.split(",");
-                    if(parts.length >= 3) 
+                    if(parts.length >= 3)
                     {
                         String[] nameParts = parts[0].trim().split(" ");
                         String surname = nameParts[0];
@@ -89,24 +89,24 @@ public class Main
                         String patronymic = nameParts[2];
                         int course = Integer.parseInt(parts[1].trim());
                         int group = Integer.parseInt(parts[2].trim());
-                        
+
                         currentBook = new GradeBook(surname, name, patronymic, course, group);
                         gradeBooks.add(currentBook);
                     }
-                } 
-                else if(line.startsWith("Сессия:")) 
+                }
+                else if(line.startsWith("Сессия:"))
                 {
                     int sessionNumber = Integer.parseInt(line.substring(7).trim());
-                    if (currentBook != null) 
+                    if (currentBook != null)
                     {
                         currentSession = currentBook.createSession(sessionNumber);
                     }
-                } 
-                else if(line.startsWith("Экзамен:")) 
+                }
+                else if(line.startsWith("Экзамен:"))
                 {
                     String examData = line.substring(8).trim();
                     String[] parts = examData.split(",");
-                    if(parts.length >= 2 && currentSession != null) 
+                    if(parts.length >= 2 && currentSession != null)
                     {
                         String subject = parts[0].trim();
                         int grade = Integer.parseInt(parts[1].trim());
@@ -114,10 +114,10 @@ public class Main
                     }
                 }
             }
-        } 
-        catch (IOException e) 
+        }
+        catch (IOException e)
         {
-            System.out.println("Ошибка чтения файла");
+            System.out.println("Ошибка чтения файла: " + e.getMessage());
         }
     }
 }
