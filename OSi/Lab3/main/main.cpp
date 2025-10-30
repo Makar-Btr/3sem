@@ -35,24 +35,24 @@ DWORD WINAPI MarkerThread(LPVOID lpParam)
     int id = params->id;
     int markedCount = 0;
     
-    WaitForSingleObject(params->hStartEvent, INFINITE);
+    
 
-    srand(id);
+    
 
     HANDLE waitEvents[2] = { params->hContinueEvent, params->hStopEvent };
 
     while (true) 
     {
-        
+        WaitForSingleObject(params->hStartEvent, INFINITE);
         bool collision = false;
         int collisionIndex = -1;
-
+        srand(id);
         while (!collision) 
         {
-            int index = rand() % params->arraySize;
 
             EnterCriticalSection(params->cs);
-
+            
+            int index = rand() % params->arraySize;
             if (params->sharedArray[index] == 0) 
             {
                 Sleep(5);
@@ -66,44 +66,36 @@ DWORD WINAPI MarkerThread(LPVOID lpParam)
             {
                 collision = true;
                 collisionIndex = index;
-                
+                cout << "    Marker " << id << " stopped. Marks: " << markedCount 
+             << ". Collision at index " << collisionIndex << "." << endl;
                 LeaveCriticalSection(params->cs);
             }
         }
-        cout << "    Marker " << id << " stopped. Marks: " << markedCount 
-             << ". Collision at index " << collisionIndex << "." << endl;
+        
 
         SetEvent(params->hStoppedEvent);
+        
+        //DWORD waitResult = WaitForMultipleObjects(2, waitEvents, FALSE, INFINITE);
+        WaitForSingleObject(params->hContinueEvent, INFINITE);
 
-        DWORD waitResult = WaitForMultipleObjects(2, waitEvents, FALSE, INFINITE);
-
-        if (waitResult == WAIT_OBJECT_0) 
+        if (WaitForSingleObject(params->hStopEvent, 0) == WAIT_OBJECT_0) 
         {
-            cout << "--- Marker " << id << " resuming." << endl;
+            EnterCriticalSection(params->cs);
+
+            for (int i = 0; i < params->arraySize; ++i) 
+            {
+                if (params->sharedArray[i] == id) 
+                {
+                    params->sharedArray[i] = 0;
+                }
+            }
+            LeaveCriticalSection(params->cs);
+            return 0;
         } 
-        else 
-        {
-            cout << "--- Marker " << id << " terminating." << endl;
-        }
+        
     }
 
-    EnterCriticalSection(params->cs);
-
-    cout << "--- Marker " << id << " cleaning up..." << endl;
-    int cleanedCount = 0;
-    for (int i = 0; i < params->arraySize; ++i) 
-    {
-        if (params->sharedArray[i] == id) 
-        {
-            params->sharedArray[i] = 0;
-            cleanedCount++;
-        }
-    }
-    cout << "--- Marker " << id << " cleaned " << cleanedCount << " marks." << endl;
-
-    LeaveCriticalSection(params->cs);
-
-    delete params;
+    //delete params;
     return 0;
 }
 
@@ -137,7 +129,7 @@ int main() {
     vector<HANDLE> hThreadHandles(markerCount);
     vector<HANDLE> hStoppedEvents(markerCount);
     vector<HANDLE> hStopEvents(markerCount);
-    vector<HANDLE> hContinueEvents(markerCount);
+    HANDLE hContinueEvent = CreateEvent( NULL, TRUE, FALSE, NULL );
     vector<bool> isThreadActive(markerCount, true);
     int activeThreadsCount = markerCount;
 
@@ -147,7 +139,6 @@ int main() {
     {
         hStoppedEvents[i] = CreateEvent( NULL, FALSE, FALSE, NULL );
         hStopEvents[i] = CreateEvent( NULL, FALSE, FALSE, NULL );
-        hContinueEvents[i] = CreateEvent( NULL, FALSE, FALSE, NULL );
 
         MarkerParams* params = new MarkerParams;
         params->id = i + 1;
@@ -157,7 +148,7 @@ int main() {
         params->hStartEvent = hStartEvent;
         params->hStoppedEvent = hStoppedEvents[i];
         params->hStopEvent = hStopEvents[i];
-        params->hContinueEvent = hContinueEvents[i];
+        params->hContinueEvent = hContinueEvent;
 
         hThreadHandles[i] = CreateThread(NULL, 0, MarkerThread, params, 0, NULL);
         if (hThreadHandles[i] == NULL) 
@@ -172,7 +163,7 @@ int main() {
 
     while (activeThreadsCount > 0) 
     {
-        
+        ResetEvent(hContinueEvent);
         vector<HANDLE> hActiveStoppedEvents;
         for (int i = 0; i < markerCount; ++i) 
         {
@@ -187,14 +178,13 @@ int main() {
             break;
         }
 
-        cout << "\nMain: Ожидание остановки " << activeThreadsCount << " потоков" << endl;
         WaitForMultipleObjects( (DWORD)hActiveStoppedEvents.size(), 
                                 hActiveStoppedEvents.data(), TRUE, INFINITE );
         cout << "Main: Все активные потоки остановлены." << endl;
 
         cout << "Main: Текущее состояние массива:" << endl;
         PrintArray(sharedArray, arraySize, &cs);
-
+    
         int idToTerminate = -1;
         bool validId = false;
         while (!validId) 
@@ -228,14 +218,14 @@ int main() {
 
         isThreadActive[indexToTerminate] = false;
         SetEvent(hStopEvents[indexToTerminate]);
-
-        WaitForSingleObject(hThreadHandles[indexToTerminate], INFINITE);
-        cout << "Main: Поток " << idToTerminate << " завершен" << endl;
+        ResetEvent(hStartEvent);
+        SetEvent(hContinueEvent);
+        //[EQYZ]
+        WaitForSingleObject(hThreadHandles[indexToTerminate], INFINITE); //****
 
         CloseHandle(hThreadHandles[indexToTerminate]);
         CloseHandle(hStopEvents[indexToTerminate]);
         CloseHandle(hStoppedEvents[indexToTerminate]);
-        CloseHandle(hContinueEvents[indexToTerminate]);
 
         activeThreadsCount--;
 
@@ -244,22 +234,17 @@ int main() {
 
         if (activeThreadsCount > 0) 
         {
-            for (int i = 0; i < markerCount; ++i) 
-            {
-                if (isThreadActive[i]) 
-                {
-                    SetEvent(hContinueEvents[i]);
-                }
-            }
+            SetEvent(hStartEvent);
         }
     }
 
     cout << "\nВсе потоки marker завершены." << endl;
-
+    
+    CloseHandle(hContinueEvent);
     CloseHandle(hStartEvent);
     DeleteCriticalSection(&cs);
     delete[] sharedArray;
-
+    
     cout << "Нажмите Enter для выхода." << endl;
     cin.ignore();
     cin.get();   
