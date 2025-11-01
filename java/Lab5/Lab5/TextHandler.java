@@ -42,6 +42,11 @@ class TextHandler
 
         List<String> words = new ArrayList<>(Arrays.asList(normalizedText.split(" ")));
         
+        if (!words.isEmpty()) 
+        {
+            words.set(0, "        " + words.get(0));
+        }
+        
         List<String> handledLines = new ArrayList<>();
         List<String> currentLineWords = new ArrayList<>();
         int currentLineLength = 0;
@@ -71,12 +76,14 @@ class TextHandler
                 handledLines.add(handleLine(currentLineWords, currentLineLength));
                 currentLineWords.clear();
                 currentLineLength = 0;
+                
+                i--; 
             }
         }
 
         if (!currentLineWords.isEmpty()) 
         {
-            handledLines.add(handleLine(currentLineWords, currentLineLength));
+            handledLines.add(String.join(" ", currentLineWords));
         }
 
         return String.join("\n", handledLines);
