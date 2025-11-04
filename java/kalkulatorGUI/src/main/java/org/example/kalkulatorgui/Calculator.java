@@ -2,31 +2,23 @@ package org.example.kalkulatorgui;
 
 import java.util.Stack;
 
-// Это прямой перенос логики из вашего C++ файла
-public class Calculator
-{
+public class Calculator {
 
     private final String infix;
     private String postfix;
-    private int result;
+    private double result;
 
     public Calculator(String _infix)
     {
-        this.infix = _infix.replaceAll("\\s+", ""); // Убираем пробелы
+        this.infix = _infix.replaceAll("\\s+", "");
         this.postfix = "";
-        this.result = 0;
+        this.result = 0.0;
     }
 
     private int priority(char op)
     {
-        if (op == '+' || op == '-')
-        {
-            return 1;
-        }
-        if (op == '*' || op == '/')
-        {
-            return 2;
-        }
+        if (op == '+' || op == '-') return 1;
+        if (op == '*' || op == '/') return 2;
         return 0;
     }
 
@@ -37,14 +29,23 @@ public class Calculator
 
     public void convertToPostfix()
     {
-        Stack<Character> operators = new Stack<>();
         StringBuilder pf = new StringBuilder();
+        Stack<Character> operators = new Stack<>();
 
-        for (char c : infix.toCharArray())
+        for (int i = 0; i < infix.length(); i++)
         {
-            if (Character.isDigit(c))
+            char c = infix.charAt(i);
+
+            if (Character.isDigit(c) || c == '.')
             {
-                pf.append(c);
+                StringBuilder num = new StringBuilder();
+                while (i < infix.length() && (Character.isDigit(infix.charAt(i)) || infix.charAt(i) == '.'))
+                {
+                    num.append(infix.charAt(i));
+                    i++;
+                }
+                i--;
+                pf.append(num.toString()).append(" ");
             }
             else if (c == '(')
             {
@@ -54,18 +55,19 @@ public class Calculator
             {
                 while (!operators.empty() && operators.peek() != '(')
                 {
-                    pf.append(operators.pop());
+                    pf.append(operators.pop()).append(" ");
                 }
-                if (!operators.empty())
+                if (operators.empty())
                 {
-                    operators.pop();
+                    throw new IllegalArgumentException("Ошибка: нет '(' для ')'");
                 }
+                operators.pop();
             }
             else if (isOperator(c))
             {
                 while (!operators.empty() && priority(operators.peek()) >= priority(c))
                 {
-                    pf.append(operators.pop());
+                    pf.append(operators.pop()).append(" ");
                 }
                 operators.push(c);
             }
@@ -73,9 +75,14 @@ public class Calculator
 
         while (!operators.empty())
         {
-            pf.append(operators.pop());
+            char op = operators.pop();
+            if (op == '(')
+            {
+                throw new IllegalArgumentException("Ошибка: нет ')' для '('");
+            }
+            pf.append(op).append(" ");
         }
-        this.postfix = pf.toString();
+        this.postfix = pf.toString().trim();
     }
 
     public void calculateResult()
@@ -85,30 +92,31 @@ public class Calculator
             convertToPostfix();
         }
 
-        Stack<Integer> values = new Stack<>();
+        Stack<Double> values = new Stack<>();
+        String[] tokens = this.postfix.split("\\s+");
 
-        for (char c : this.postfix.toCharArray())
+        if (tokens.length == 1 && tokens[0].isEmpty())
         {
-            if (Character.isDigit(c))
-            {
-                values.push(c - '0');
-            }
-            else
-            {
-                int val2 = values.pop();
-                int val1 = values.pop();
+            if (!values.empty()) this.result = values.pop();
+            return;
+        }
 
-                switch (c)
+        for (String token : tokens)
+        {
+            if (token.length() == 1 && isOperator(token.charAt(0)))
+            {
+                if (values.size() < 2)
                 {
-                    case '+':
-                        values.push(val1 + val2);
-                        break;
-                    case '-':
-                        values.push(val1 - val2);
-                        break;
-                    case '*':
-                        values.push(val1 * val2);
-                        break;
+                    throw new IllegalArgumentException("Ошибка: не хватает операндов");
+                }
+                double val2 = values.pop();
+                double val1 = values.pop();
+
+                switch (token.charAt(0))
+                {
+                    case '+': values.push(val1 + val2); break;
+                    case '-': values.push(val1 - val2); break;
+                    case '*': values.push(val1 * val2); break;
                     case '/':
                         if (val2 == 0)
                             throw new ArithmeticException("Деление на ноль!");
@@ -116,6 +124,22 @@ public class Calculator
                         break;
                 }
             }
+            else
+            {
+                try
+                {
+                    values.push(Double.parseDouble(token));
+                }
+                catch (NumberFormatException e)
+                {
+                    throw new IllegalArgumentException("Ошибка: неверный символ '" + token + "'");
+                }
+            }
+        }
+
+        if (values.size() != 1)
+        {
+            throw new IllegalArgumentException("Ошибка: выражение составлено неверно");
         }
         this.result = values.pop();
     }
@@ -130,7 +154,7 @@ public class Calculator
         return postfix;
     }
 
-    public int getResult()
+    public double getResult()
     {
         return result;
     }
