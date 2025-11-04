@@ -43,6 +43,8 @@
 
 .vscode/
 
+build/
+
 .idea/
 .mvn/
 target/
