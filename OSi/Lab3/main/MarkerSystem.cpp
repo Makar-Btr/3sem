@@ -18,7 +18,7 @@ struct MarkerParams
     HANDLE hContinueEvent;
 };
 
-/*DWORD WINAPI MarkerThread(LPVOID lpParam) 
+DWORD WINAPI MarkerThread(LPVOID lpParam) 
 {
     MarkerParams* params = (MarkerParams*)lpParam;
     int id = params->id;
@@ -31,20 +31,20 @@ struct MarkerParams
         WaitForSingleObject(params->hStartEvent, INFINITE);
         bool collision = false;
         int collisionIndex = -1;
-        srand(id); 
+        srand(id);
         
         while (!collision) 
         {
-            EnterCriticalSection(params->cs); 
+            EnterCriticalSection(params->cs);
             
             int index = rand() % params->arraySize;
-            if (params->sharedArray[index] == 0) 
+            if (params->sharedArray[index] == 0)
             {
                 Sleep(5);
                 params->sharedArray[index] = id;
                 markedCount++;
-                Sleep(5); 
-                LeaveCriticalSection(params->cs); 
+                Sleep(5);
+                LeaveCriticalSection(params->cs);
             } 
             else 
             {
@@ -56,86 +56,11 @@ struct MarkerParams
             }
         }
         
-        SetEvent(params->hStoppedEvent); 
+        SetEvent(params->hStoppedEvent);
         
         WaitForSingleObject(params->hContinueEvent, INFINITE);
 
         if (WaitForSingleObject(params->hStopEvent, 0) == WAIT_OBJECT_0) 
-        {
-            EnterCriticalSection(params->cs); 
-            for (int i = 0; i < params->arraySize; ++i) 
-            {
-                if (params->sharedArray[i] == id) 
-                {
-                    params->sharedArray[i] = 0;
-                }
-            }
-            LeaveCriticalSection(params->cs); 
-            delete params; 
-            return 0;
-        } 
-    }
-    return 0;
-}*/
-
-DWORD WINAPI MarkerThread(LPVOID lpParam) {
-    MarkerParams* params = (MarkerParams*)lpParam;
-    int id = params->id;
-    int markedCount = 0;
-
-    HANDLE waitEvents[2] = { params->hContinueEvent, params->hStopEvent };
-
-    while (true) 
-    {
-        WaitForSingleObject(params->hStartEvent, INFINITE);
-
-        srand(id + (int)time(0)); 
-        
-        bool canMark = true;
-
-        while (canMark) 
-        {
-            if (WaitForSingleObject(params->hStopEvent, 0) == WAIT_OBJECT_0) {
-                canMark = false; 
-                break;; 
-            }
-
-            EnterCriticalSection(params->cs);
-
-            int freeIndex = -1;
-            
-            int startIndex = rand() % params->arraySize;
-            for (int i = 0; i < params->arraySize; ++i) 
-            {
-                int probeIndex = (startIndex + i) % params->arraySize;
-                if (params->sharedArray[probeIndex] == 0) {
-                    freeIndex = probeIndex;
-                    break;
-                }
-            }
-
-            if (freeIndex != -1) 
-            {
-                Sleep(5);
-                params->sharedArray[freeIndex] = id;
-                markedCount++;
-                Sleep(5);
-                LeaveCriticalSection(params->cs);
-            } 
-            else 
-            {
-                canMark = false; 
-                cout << "    Marker " << id << " stopped. Marks: " << markedCount 
-                     << ". No free cells found." << endl;
-                LeaveCriticalSection(params->cs);
-            }
-        }
-        
-        SetEvent(params->hStoppedEvent);
-        
-        DWORD waitResult = WaitForMultipleObjects(2, waitEvents, FALSE, INFINITE);
-
-        if (waitResult == WAIT_OBJECT_0 + 1) 
         {
             EnterCriticalSection(params->cs);
             for (int i = 0; i < params->arraySize; ++i) 
@@ -147,14 +72,10 @@ DWORD WINAPI MarkerThread(LPVOID lpParam) {
             }
             LeaveCriticalSection(params->cs);
             delete params;
-            return 0; 
-        }
-        else 
-        {
-             
-        }
+            return 0;
+        } 
     }
-    return 0;
+    return 0; 
 }
 
 MarkerSystem::MarkerSystem(int size, int count)
@@ -177,7 +98,7 @@ MarkerSystem::MarkerSystem(int size, int count)
 
     for (int i = 0; i < markerCount; ++i) 
     {
-        hStoppedEvents[i] = CreateEvent(NULL, FALSE, FALSE, NULL); 
+        hStoppedEvents[i] = CreateEvent(NULL, FALSE, FALSE, NULL);
         hStopEvents[i] = CreateEvent(NULL, FALSE, FALSE, NULL);
 
         MarkerParams* params = new MarkerParams;
@@ -246,7 +167,8 @@ void MarkerSystem::terminateThread(int id)
 
     isThreadActiveVector[index] = false;
     SetEvent(hStopEvents[index]);
-     
+    
+    SetEvent(hContinueEvent); 
 
     WaitForSingleObject(hThreadHandles[index], INFINITE);
 
@@ -256,6 +178,7 @@ void MarkerSystem::terminateThread(int id)
 
     activeThreadsCount--;
 
+    ResetEvent(hContinueEvent);
 }
 
 void MarkerSystem::continueAll()
@@ -264,7 +187,7 @@ void MarkerSystem::continueAll()
     
     ResetEvent(hStartEvent);
     SetEvent(hContinueEvent);
-    ResetEvent(hContinueEvent); 
+    ResetEvent(hContinueEvent);
     SetEvent(hStartEvent);
 }
 
