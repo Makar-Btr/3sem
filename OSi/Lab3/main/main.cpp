@@ -6,7 +6,7 @@
 using namespace std;
 
 int main() {
-    setlocale(LC_ALL, "Russian");
+    setlocale(LC_ALL, "RU.UTF-8");
 
     int arraySize;
     cout << "Введите размер массива: ";

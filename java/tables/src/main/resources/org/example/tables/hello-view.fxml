@@ -16,14 +16,14 @@
 
         <HBox alignment="CENTER" spacing="10.0">
             <children>
-                <ComboBox fx:id="sortComboBox" promptText="Сортировать по..." />
-                <Button fx:id="sortButton" mnemonicParsing="false" onAction="#onSortButtonClick" text="Сортировать" />
+                <ComboBox fx:id="sortComboBox" promptText="Sort by..." />
+                <Button fx:id="sortButton" mnemonicParsing="false" onAction="#onSortButtonClick" text="Sort" />
             </children>
         </HBox>
 
         <HBox alignment="CENTER" spacing="5.0">
             <children>
-                <Button fx:id="inputButton" mnemonicParsing="false" onAction="#onInputButtonClick" text="Загрузить из файла" />
+                <Button fx:id="inputButton" mnemonicParsing="false" onAction="#onInputButtonClick" text="Input" />
             </children>
         </HBox>
 

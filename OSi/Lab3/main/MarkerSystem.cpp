@@ -1,7 +1,6 @@
 #include "MarkerSystem.h"
 #include <iostream>
 #include <vector>
-#include <ctime>
 #include <process.h>
 
 using namespace std;
@@ -9,7 +8,7 @@ using namespace std;
 struct MarkerParams 
 {
     int id;               
-    int arraySize;        
+    int arraySize;         
     int* sharedArray;     
     CRITICAL_SECTION* cs; 
     HANDLE hStartEvent;   
