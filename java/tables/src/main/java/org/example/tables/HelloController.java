@@ -92,11 +92,13 @@ public class HelloController
 
                             studentData.add(new Student(surname, name, patronymic, group, id));
 
-                        } catch (NumberFormatException e)
-                        {
-                            System.err.println("Ошибка парсинга ID в строке: " + line);
                         }
-                    } else
+                        catch (NumberFormatException e)
+                        {
+                            System.err.println("Ошибка ID в строке: " + line);
+                        }
+                    }
+                    else
                     {
                         System.err.println("Неверный формат строки: " + line);
                     }
@@ -137,7 +139,6 @@ public class HelloController
     {
         loadDataFromFile();
     }
-    // ------------------------------------------
 
 
     private void showErrorAlert(String content)

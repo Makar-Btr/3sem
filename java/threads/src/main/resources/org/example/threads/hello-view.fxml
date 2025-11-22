@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER_LEFT" spacing="10.0" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.example.threads.HelloController"
+      fx:id="mainContainer">
+
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+
+    <VBox fx:id="barsContainer" spacing="5" VBox.vgrow="ALWAYS" alignment="TOP_LEFT">
+    </VBox>
+</VBox>
