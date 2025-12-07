@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="10.0" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.example.demo.HelloController">
+
+    <MenuBar>
+        <Menu text="Файл">
+            <MenuItem text="Сохранить" onAction="#onSaveClick"/>
+            <MenuItem text="Выход" onAction="#onExitClick"/>
+        </Menu>
+        <Menu text="Действия">
+            <MenuItem text="Выдать книгу читателю" onAction="#onIssueBookClick"/>
+            <MenuItem text="Изменить цену" onAction="#onChangePriceClick"/>
+        </Menu>
+    </MenuBar>
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <padding><Insets left="10" right="10" top="5"/></padding>
+        <Label text="Поиск:" />
+        <ComboBox fx:id="searchTypeBox" prefWidth="100"/>
+        <TextField fx:id="searchField" promptText="Введите текст..." HBox.hgrow="ALWAYS"/>
+        <Button text="Найти" onAction="#onSearchClick"/>
+        <Button text="Сброс" onAction="#onResetSearchClick"/>
+    </HBox>
+
+    <TableView fx:id="bookTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colId" text="ID" prefWidth="30"/>
+            <TableColumn fx:id="colTitle" text="Название" prefWidth="150"/>
+            <TableColumn fx:id="colAuthor" text="Автор" prefWidth="120"/>
+            <TableColumn fx:id="colYear" text="Год" prefWidth="50"/>
+            <TableColumn fx:id="colPrice" text="Цена" prefWidth="70"/>
+            <TableColumn fx:id="colCategory" text="Категория" prefWidth="100"/>
+            <TableColumn fx:id="colTotal" text="Всего" prefWidth="50"/>
+            <TableColumn fx:id="colStock" text="В наличии" prefWidth="70"/>
+        </columns>
+    </TableView>
+
+    <TitledPane text="Добавить новую книгу" collapsible="true">
+        <HBox spacing="5" alignment="CENTER_LEFT">
+            <TextField fx:id="addTitle" promptText="Название" prefWidth="100"/>
+            <TextField fx:id="addAuthor" promptText="Автор" prefWidth="100"/>
+            <TextField fx:id="addYear" promptText="Год" prefWidth="60"/>
+            <TextField fx:id="addPrice" promptText="Цена" prefWidth="60"/>
+            <TextField fx:id="addCategory" promptText="Категория" prefWidth="90"/>
+            <TextField fx:id="addTotal" promptText="Всего шт." prefWidth="60"/>
+            <Button text="Добавить" onAction="#onAddBookClick"/>
+        </HBox>
+    </TitledPane>
+
+    <Label fx:id="statusLabel" text="Статус: Ожидание..." textFill="gray">
+        <padding><Insets left="10" bottom="5"/></padding>
+    </Label>
+</VBox>

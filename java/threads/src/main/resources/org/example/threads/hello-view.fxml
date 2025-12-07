@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.BorderPane?>
 
-<VBox alignment="CENTER_LEFT" spacing="10.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="org.example.threads.HelloController"
-      fx:id="mainContainer">
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.threads.HelloController"
+            prefHeight="700" prefWidth="1000">
 
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
+    <top>
+        <HBox fx:id="controls" spacing="10" alignment="CENTER" style="-fx-padding: 10; -fx-background-color: #eee;">
+            <Button fx:id="loadBtn" text="Загрузить файл"/>
+            <Button fx:id="startBtn" text="Начать сортировку" disable="true"/>
+        </HBox>
+    </top>
 
-    <VBox fx:id="barsContainer" spacing="5" VBox.vgrow="ALWAYS" alignment="TOP_LEFT">
-    </VBox>
-</VBox>
+    <center>
+        <HBox fx:id="visualArea" spacing="20" alignment="CENTER" style="-fx-padding: 20;">
+        </HBox>
+    </center>
+</BorderPane>
