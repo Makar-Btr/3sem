@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Каталог книг</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <div class="container">
+        <a class="navbar-brand" href="#">📚 Библиотека</a>
+        <div class="d-flex">
+            <span class="navbar-text me-3" th:text="'Вы вошли как: ' + ${#authentication.name}">User</span>
+            <a href="/account" class="btn btn-outline-light btn-sm me-2">Личный кабинет</a>
+            <a href="/logout" class="btn btn-danger btn-sm">Выход</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row mb-3 align-items-center">
+        <div class="col-md-8">
+            <form action="/books" method="get" class="d-flex gap-2">
+                <input type="text" name="search" class="form-control" placeholder="Найти книгу..." style="max-width: 300px;">
+                <select name="type" class="form-select" style="width: auto;">
+                    <option value="author">По автору</option>
+                    <option value="year">По году</option>
+                    <option value="category">По жанру</option>
+                </select>
+                <button type="submit" class="btn btn-primary">Поиск</button>
+                <a href="/books" class="btn btn-secondary">Сброс</a>
+            </form>
+        </div>
+        <div class="col-md-4 text-end">
+            <a th:if="${#strings.contains(role, 'LIBRARIAN')}" href="/librarian/add" class="btn btn-success">
+                + Добавить книгу
+            </a>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <table class="table table-hover mb-0">
+            <thead class="table-light">
+            <tr>
+                <th>Название</th>
+                <th>Автор</th>
+                <th>Год</th>
+                <th>Цена</th>
+                <th>Категория</th>
+                <th>В наличии</th>
+                <th th:if="${#strings.contains(role, 'LIBRARIAN')}">Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="book : ${books}">
+                <td class="fw-bold" th:text="${book.title}"></td>
+                <td th:text="${book.author}"></td>
+                <td th:text="${book.year}"></td>
+                <td th:text="${book.price} + ' ₽'"></td>
+                <td><span class="badge bg-info text-dark" th:text="${book.category}"></span></td>
+                <td>
+                            <span th:text="${book.inStock}"
+                                  th:class="${book.inStock > 0} ? 'badge bg-success' : 'badge bg-danger'">
+                            </span>
+                </td>
+
+                <td th:if="${#strings.contains(role, 'LIBRARIAN')}">
+                    <form th:action="@{/librarian/issue/{id}(id=${book.id})}" method="post" class="d-flex gap-1" th:if="${book.inStock > 0}">
+                        <input type="text" name="username" class="form-control form-control-sm" placeholder="Логин" style="width: 100px;" required>
+                        <button type="submit" class="btn btn-sm btn-outline-primary">Выдать</button>
+                    </form>
+                    <span th:if="${book.inStock == 0}" class="text-muted small">Нет в наличии</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script th:if="${showRegisterModal}">
+    window.addEventListener('DOMContentLoaded', event => {
+        var myModal = new bootstrap.Modal(document.getElementById('registerModal'));
+        myModal.show();
+    });
+</script>
+
+</body>
+</html>

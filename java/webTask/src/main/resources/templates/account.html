@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Личный кабинет</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<h1>Личный кабинет</h1>
+
+<div>
+    <p><strong>Пользователь:</strong> <span th:text="${user.username}">Имя</span></p>
+    <p><strong>Роль:</strong> <span th:text="${user.role}">Роль</span></p>
+</div>
+
+<hr>
+
+<h3>Мои книги (взятые в библиотеке):</h3>
+<div th:if="${#lists.isEmpty(user.issuedBooks)}">
+    <p>У вас пока нет взятых книг.</p>
+</div>
+<ul th:if="${not #lists.isEmpty(user.issuedBooks)}">
+    <li th:each="bookTitle : ${user.issuedBooks}" th:text="${bookTitle}">Название книги</li>
+</ul>
+
+<br>
+<a href="/books">Вернуться в каталог</a> | <a href="/logout">Выйти</a>
+</body>
+</html>

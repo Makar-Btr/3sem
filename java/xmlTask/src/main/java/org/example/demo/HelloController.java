@@ -68,17 +68,16 @@ public class HelloController {
         alert.showAndWait();
     }
 
-    // --- Чтение XML через DOM ---
     private void loadXmlData() {
         try {
-            // 1. Валидация XSD
+            //XSD
             SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             Schema schema = schemaFactory.newSchema(new File("library.xsd"));
             Validator validator = schema.newValidator();
             validator.validate(new StreamSource(xmlFile));
             statusLabel.setText("✅ Статус: XML валиден (XSD проверен).");
 
-            // 2. Парсинг DOM
+            //DOM
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             dbFactory.setIgnoringElementContentWhitespace(true);
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -93,7 +92,6 @@ public class HelloController {
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element element = (Element) nNode;
 
-                    // Чтение атрибутов и элементов (с преобразованием типов)
                     int id = Integer.parseInt(element.getAttribute("id"));
                     int total = Integer.parseInt(element.getAttribute("total"));
                     int inStock = Integer.parseInt(element.getAttribute("inStock"));
@@ -125,7 +123,6 @@ public class HelloController {
         return node.getNodeValue();
     }
 
-    // --- Сохранение XML через DOM ---
     @FXML
     protected void onSaveClick() {
         try {
@@ -138,16 +135,13 @@ public class HelloController {
             for (Book book : masterData) {
                 Element bookElement = doc.createElement("book");
 
-                // Установка атрибутов
                 bookElement.setAttribute("id", String.valueOf(book.getId()));
                 bookElement.setAttribute("total", String.valueOf(book.getTotal()));
                 bookElement.setAttribute("inStock", String.valueOf(book.getInStock()));
 
-                // Создание дочерних элементов
                 appendChildElement(doc, bookElement, "title", book.getTitle());
                 appendChildElement(doc, bookElement, "author", book.getAuthor());
                 appendChildElement(doc, bookElement, "year", String.valueOf(book.getYear()));
-                // Цена должна иметь формат с точкой, а не запятой, для XML
                 appendChildElement(doc, bookElement, "price", String.valueOf(book.getPrice()));
                 appendChildElement(doc, bookElement, "category", book.getCategory());
 
@@ -180,7 +174,6 @@ public class HelloController {
         parent.appendChild(el);
     }
 
-    // --- Поиск ---
     @FXML
     protected void onSearchClick() {
         String searchText = searchField.getText().toLowerCase();
@@ -210,18 +203,15 @@ public class HelloController {
         statusLabel.setText("🔎 Поиск сброшен.");
     }
 
-    // --- Добавление новой книги (с валидацией) ---
     @FXML
     protected void onAddBookClick() {
         try {
             int maxId = masterData.stream().mapToInt(Book::getId).max().orElse(0);
 
-            // Валидация числовых полей
             int year = Integer.parseInt(addYear.getText());
             double price = Double.parseDouble(addPrice.getText());
             int total = Integer.parseInt(addTotal.getText());
 
-            // Запрет отрицательных чисел
             if (year <= 0 || price <= 0 || total <= 0) {
                 showErrorDialog("Ошибка ввода", "Год, Цена и Количество экземпляров должны быть положительными числами.");
                 return;
@@ -251,7 +241,6 @@ public class HelloController {
         }
     }
 
-    // --- Эмуляция выдачи ---
     @FXML
     protected void onIssueBookClick() {
         Book selected = bookTable.getSelectionModel().getSelectedItem();
@@ -268,7 +257,6 @@ public class HelloController {
         }
     }
 
-    // --- Изменение цены (с валидацией) ---
     @FXML
     protected void onChangePriceClick() {
         Book selected = bookTable.getSelectionModel().getSelectedItem();
@@ -283,7 +271,6 @@ public class HelloController {
                 try {
                     double newPrice = Double.parseDouble(priceStr);
 
-                    // Запрет отрицательных чисел
                     if (newPrice <= 0) {
                         showErrorDialog("Ошибка ввода", "Цена должна быть положительным числом.");
                         return;

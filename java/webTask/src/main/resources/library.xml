@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<library>
+    <book id="1" inStock="0" total="5">
+        <title>Capital</title>
+        <author>Karl Marx</author>
+        <year>1867</year>
+        <price>1000.0</price>
+        <category>economy</category>
+    </book>
+    <book id="2" inStock="3" total="3">
+        <title>The Kama Sutra</title>
+        <author>Andrew Batrameyeu</author>
+        <year>1883</year>
+        <price>1000.0</price>
+        <category>education</category>
+    </book>
+    <book id="3" inStock="8" total="10">
+        <title>Java Programming</title>
+        <author>James Gosling</author>
+        <year>1867</year>
+        <price>49.99</price>
+        <category>programming</category>
+    </book>
+    <book id="4" inStock="1" total="7">
+        <title>Design Patterns</title>
+        <author>Erich Gamma</author>
+        <year>1994</year>
+        <price>39.99</price>
+        <category>computer-science</category>
+    </book>
+    <book id="5" inStock="4" total="4">
+        <title>The Poverty of philosophy</title>
+        <author>Karl Marx</author>
+        <year>1847</year>
+        <price>36.45</price>
+        <category>philosophy</category>
+    </book>
+    <book id="6" inStock="4" total="10">
+        <title>12 chairs</title>
+        <author>Ilya Ilf</author>
+        <year>1927</year>
+        <price>12.12</price>
+        <category>novel</category>
+    </book>
+    <book id="7" inStock="5" total="6">
+        <title>Clean Code</title>
+        <author>Robert Martin</author>
+        <year>2008</year>
+        <price>45.0</price>
+        <category>programming</category>
+    </book>
+    <book id="8" inStock="0" total="2">
+        <title>The Clean Coder</title>
+        <author>Robert Martin</author>
+        <year>2011</year>
+        <price>40.5</price>
+        <category>programming</category>
+    </book>
+    <book id="9" inStock="5" total="5">
+        <title>Effective Java</title>
+        <author>Joshua Bloch</author>
+        <year>2018</year>
+        <price>55.0</price>
+        <category>programming</category>
+    </book>
+    <book id="10" inStock="1" total="3">
+        <title>War and Peace</title>
+        <author>Leo Tolstoy</author>
+        <year>1869</year>
+        <price>25.0</price>
+        <category>novel</category>
+    </book>
+    <book id="11" inStock="2" total="4">
+        <title>Anna Karenina</title>
+        <author>Leo Tolstoy</author>
+        <year>1877</year>
+        <price>22.0</price>
+        <category>novel</category>
+    </book>
+    <book id="12" inStock="8" total="8">
+        <title>Introduction to Algorithms</title>
+        <author>Thomas Cormen</author>
+        <year>2009</year>
+        <price>90.0</price>
+        <category>education</category>
+    </book>
+    <book id="13" inStock="2" total="5">
+        <title>Harry Potter 1</title>
+        <author>J.K. Rowling</author>
+        <year>1997</year>
+        <price>20.0</price>
+        <category>fantasy</category>
+    </book>
+    <book id="14" inStock="1" total="5">
+        <title>Harry Potter 2</title>
+        <author>J.K. Rowling</author>
+        <year>1998</year>
+        <price>20.0</price>
+        <category>fantasy</category>
+    </book>
+    <book id="15" inStock="1" total="1">
+        <title>Thinking in Java</title>
+        <author>Bruce Eckel</author>
+        <year>2006</year>
+        <price>60.0</price>
+        <category>programming</category>
+    </book>
+</library>
