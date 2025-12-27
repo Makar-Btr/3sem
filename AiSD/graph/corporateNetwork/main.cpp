@@ -5,7 +5,7 @@ using namespace std;
 
 class DSU
 {
-public:
+  public:
     DSU(int n)
     {
         m_parent.resize(n + 1);
@@ -31,24 +31,24 @@ public:
             m_path.push_back(root);
             root = m_parent[root];
         }
-        
+
         for (int i = m_path.size() - 1; i >= 0; i--)
         {
             int node = m_path[i];
             int old_parent = m_parent[node];
 
             m_dist[node] += m_dist[old_parent];
-            
+
             m_parent[node] = root;
         }
-        
+
         return root;
     }
 
     void Union(int i, int j)
     {
         m_parent[i] = j;
-        
+
         m_dist[i] = abs(i - j) % 1000;
     }
 
@@ -58,39 +58,34 @@ public:
         return m_dist[x];
     }
 
-private:
+  private:
     vector<int> m_parent;
     vector<long long> m_dist;
 };
 
 class Graph
 {
-public:
+  public:
     Graph(int n) : m_graph(n) {}
 
-    void I(int i, int j)
-    {
-        m_graph.Union(i, j);
-    }
+    void I(int i, int j) { m_graph.Union(i, j); }
 
-    long long E(int i)
-    {
-        return m_graph.GetDist(i);
-    }
+    long long E(int i) { return m_graph.GetDist(i); }
 
-private:
+  private:
     DSU m_graph;
 };
 
-int main() 
+int main()
 {
     ios_base::sync_with_stdio(false);
-    
+
     ifstream fin("input.txt");
     ofstream fout("output.txt");
 
     int n;
-    if (!(fin >> n)) return 0;
+    if (!(fin >> n))
+        return 0;
 
     Graph graph(n);
 
@@ -98,24 +93,25 @@ int main()
     int i, j;
     while (fin >> command)
     {
-        if (command == 'O') break;
+        if (command == 'O')
+            break;
 
         switch (command)
         {
-            case 'E':
-            {
-                fin >> i;
-                fout << graph.E(i) << endl;
-                break;
-            }
-            case 'I':
-            {
-                fin >> i >> j;
-                graph.I(i, j);
-                break;
-            }
-            default:
-                break;
+        case 'E':
+        {
+            fin >> i;
+            fout << graph.E(i) << endl;
+            break;
+        }
+        case 'I':
+        {
+            fin >> i >> j;
+            graph.I(i, j);
+            break;
+        }
+        default:
+            break;
         }
     }
     return 0;

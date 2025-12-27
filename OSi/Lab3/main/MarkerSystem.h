@@ -1,8 +1,8 @@
 #pragma once
 
+#include <stdexcept>
 #include <vector>
 #include <windows.h>
-#include <stdexcept>
 
 struct MarkerParams;
 
@@ -10,9 +10,9 @@ DWORD WINAPI MarkerThread(LPVOID lpParam);
 
 class MarkerSystem
 {
-public:
+  public:
     MarkerSystem(int size, int count);
-    
+
     ~MarkerSystem();
 
     void startAll();
@@ -28,10 +28,10 @@ public:
     int getActiveThreadCount() const;
     bool isThreadActive(int id) const;
 
-private:
+  private:
     int arraySize;
     int markerCount;
-    int* sharedArray;
+    int *sharedArray;
     CRITICAL_SECTION cs;
 
     std::vector<HANDLE> hThreadHandles;
@@ -39,11 +39,11 @@ private:
     std::vector<HANDLE> hStopEvents;
     HANDLE hContinueEvent;
     HANDLE hStartEvent;
-    
+
     std::vector<bool> isThreadActiveVector;
     int activeThreadsCount;
 
-    void printArrayToConsole(const char* title);
-    
-    friend int main(); 
+    void printArrayToConsole(const char *title);
+
+    friend int main();
 };
