@@ -1,3 +1,15 @@
+/*Дано число $N$. Необходимо определить, сколько есть бинарных строк длины $N$,
+в которых ровно $K$ единиц.
+
+Input
+Первая строка входных данных содержит два целых неотрицательных числа $N$ и $K$
+(0 \le K \le N \le 10^6).
+
+Output
+Выведите одно число - ответ на задачу. Так как ответ может быть очень большим,
+необходимо его вывести по модулю*/
+
+#include <cmath>
 #include <iostream>
 #include <vector>
 
@@ -7,33 +19,39 @@ int main()
 {
     ios::sync_with_stdio(0);
     cin.tie(0);
-    cout.tie(0);
-    
+
     int N, K;
-    int mod = 1000000007;
+    const int mod = 1000000007;
     cin >> N >> K;
-    vector<int> V(N + 1, 0);
-    V[0] = 1;
-    if(K == N || K == 0)
+
+    if (K == 0 || K == N)
     {
         cout << "1";
         return 0;
     }
 
-    if(K > N - K)
+    vector<long long> fact(N + 1);
+    fact[0] = 1;
+    for (int i = 1; i <= N; i++)
     {
-        K = N - K;
+        fact[i] = (fact[i - 1] * i) % mod;
     }
 
-    for(int i = 1; i < N + 1; i++)
+    long long divider = (fact[K] * fact[N - K]) % mod;
+    long long multiplier = 1;
+    long long exponent = mod - 2;
+    while (exponent > 0)
     {
-        for(int j = min(i, K); j > 0; j--)
+        if (exponent % 2 == 1)
         {
-            V[j] = (V[j - 1] % mod + V[j] % mod) % mod;
+            multiplier = (multiplier * divider) % mod;
         }
+        divider = (divider * divider) % mod;
+        exponent /= 2;
     }
 
-    cout << V[K];
+    long long result = (fact[N] * multiplier) % mod;
+    cout << result;
 
     return 0;
 }
